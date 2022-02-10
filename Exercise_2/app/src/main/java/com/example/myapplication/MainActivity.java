@@ -2,9 +2,11 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.livelife.motolibrary.MotoConnection;
 import com.livelife.motolibrary.OnAntEventListener;
@@ -16,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
     Button pairingButton;
     boolean isPairing = false;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -24,11 +27,12 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
 
         connection=MotoConnection.getInstance();
         connection.startMotoConnection(MainActivity.this);
-        connection.saveRfFrequency(70); // See the back of your tile for your group’s RF
+        connection.saveRfFrequency(36); // See the back of your tile for your group’s RF
         connection.setDeviceId(1); //Your group number
         connection.registerListener(MainActivity.this);
 
         pairingButton = findViewById(R.id.pairingButton);
+        pairingButton.setText("Pairing Button");
         pairingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
