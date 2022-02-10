@@ -17,8 +17,13 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
 
     MotoConnection connection;
     Button pairingButton;
+<<<<<<< HEAD
     Button startButton;
+=======
+    Button playingButton;
+>>>>>>> 7778806ed028f302415c8126ab2c6bf291ad0b25
     boolean isPairing = false;
+    boolean isPlaying = false;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -48,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
                 isPairing = !isPairing;
             }
         });
+<<<<<<< HEAD
         startButton = findViewById(R.id.startGameButton);
         startButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -56,6 +62,26 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
                 startActivity(intent);
             }
         });
+=======
+
+        GameName game = new GameName();
+        playingButton = findViewById(R.id.playingButton);
+        playingButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                if(!isPlaying){
+                    game.onGameStart();
+                    playingButton.setText("Stop Playing");
+                } else {
+                   game.onGameEnd();
+                    playingButton.setText("Start Playing");
+                }
+                isPlaying = !isPlaying;
+            }
+        });
+
+>>>>>>> 7778806ed028f302415c8126ab2c6bf291ad0b25
     }
 
     @Override
