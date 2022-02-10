@@ -3,6 +3,7 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
 
     MotoConnection connection;
     Button pairingButton;
+    Button startButton;
     boolean isPairing = false;
 
     @SuppressLint("SetTextI18n")
@@ -44,6 +46,14 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
                     pairingButton.setText("Start Pairing");
                 }
                 isPairing = !isPairing;
+            }
+        });
+        startButton = findViewById(R.id.startGameButton);
+        startButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+                startActivity(intent);
             }
         });
     }

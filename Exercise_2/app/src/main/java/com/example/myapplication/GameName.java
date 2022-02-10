@@ -1,6 +1,5 @@
 package com.example.myapplication;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.livelife.motolibrary.Game;
 import com.livelife.motolibrary.GameType;
