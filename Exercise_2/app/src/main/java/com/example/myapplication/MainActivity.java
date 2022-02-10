@@ -14,7 +14,9 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
 
     MotoConnection connection;
     Button pairingButton;
+    Button playingButton;
     boolean isPairing = false;
+    boolean isPlaying = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
 
         connection=MotoConnection.getInstance();
         connection.startMotoConnection(MainActivity.this);
-        connection.saveRfFrequency(70); // See the back of your tile for your group’s RF
+        connection.saveRfFrequency(36); // See the back of your tile for your group’s RF
         connection.setDeviceId(1); //Your group number
         connection.registerListener(MainActivity.this);
 
@@ -42,6 +44,24 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
                 isPairing = !isPairing;
             }
         });
+
+        GameName game = new GameName();
+        playingButton = findViewById(R.id.playingButton);
+        playingButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                if(!isPlaying){
+                    game.onGameStart();
+                    playingButton.setText("Stop Playing");
+                } else {
+                   game.onGameEnd();
+                    playingButton.setText("Start Playing");
+                }
+                isPlaying = !isPlaying;
+            }
+        });
+
     }
 
     @Override
