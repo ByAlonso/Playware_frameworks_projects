@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.exercise2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,12 +13,10 @@ import com.livelife.motolibrary.OnAntEventListener;
 
 public class MainActivity extends AppCompatActivity implements OnAntEventListener
 {
-
     MotoConnection connection;
-    Button pairingButton;
-    Button startButton;
+    Button pairingButton, startGameButton;
+    boolean isPairing;
     TextView statusTextView;
-    boolean isPairing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -28,33 +26,41 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
 
         connection=MotoConnection.getInstance();
         connection.startMotoConnection(MainActivity.this);
-        connection.saveRfFrequency(36); // See the back of your tile for your group’s RF
-        connection.setDeviceId(3); //Your group number
+        connection.saveRfFrequency(36);         // Check the back of your tiles for the RF
+        connection.setDeviceId(3);              // Your group number
         connection.registerListener(MainActivity.this);
 
         statusTextView = findViewById(R.id.statusTextView);
         pairingButton = findViewById(R.id.pairingButton);
-        pairingButton.setText("Pairing Button");
-        pairingButton.setOnClickListener(new View.OnClickListener() {
+        startGameButton = findViewById(R.id.startGameButton);
+
+        startGameButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
-                if(!isPairing){
-                    connection.pairTilesStart();
-                    pairingButton.setText("Stop Pairing");
-                } else {
-                    connection.pairTilesStop();
-                    pairingButton.setText("Start Pairing");
-                }
-                isPairing = !isPairing;
+            public void onClick(View v)
+            {
+                connection.unregisterListener(MainActivity.this);
+                Intent i = new Intent(MainActivity.this, GameActivity.class);
+                startActivity(i);
             }
         });
-        startButton = findViewById(R.id.startGameButton);
-        startButton.setOnClickListener(new View.OnClickListener(){
+
+        pairingButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
-                connection.unregisterListener(MainActivity.this);
-                Intent intent = new Intent(MainActivity.this, GameActivity.class);
-                startActivity(intent);
+            public void onClick(View view)
+            {
+                if(!isPairing)
+                {
+                    connection.pairTilesStart();
+                    pairingButton.setText("Stop pairing!");
+                }
+                else
+                {
+                    connection.pairTilesStop();
+                    pairingButton.setText("Start pairing!");
+                }
+                isPairing = !isPairing;
             }
         });
     }
@@ -72,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
     }
 
     @Override
-    public void onNumbersOfTilesConnected(int i)
+    public void onNumbersOfTilesConnected(final int i)
     {
         runOnUiThread(new Runnable()
         {
@@ -88,17 +94,13 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
     protected void onPause()
     {
         super.onPause();
-        connection.stopMotoConnection();
-        connection.unregisterListener(MainActivity.this);
     }
-
     @Override
     protected void onRestart()
     {
         super.onRestart();
         connection.registerListener(MainActivity.this);
     }
-
     @Override
     protected void onDestroy()
     {
