@@ -1,5 +1,6 @@
 package com.example.exercise_4;
 
+import static com.livelife.motolibrary.AntData.LED_COLOR_BLUE;
 import static com.livelife.motolibrary.AntData.LED_COLOR_OFF;
 import static com.livelife.motolibrary.AntData.LED_COLOR_RED;
 
@@ -13,7 +14,6 @@ import java.util.Collections;
 
 public class FinalCountdown extends Game {
     MotoConnection connection = MotoConnection.getInstance();
-    ArrayList<Integer> colorList = AntData.allColors();
 
 
     FinalCountdown(){
@@ -34,7 +34,12 @@ public class FinalCountdown extends Game {
     {
         super.onGameStart();
         clearPlayersScore();
-        updateTiles();
+        connection.setAllTilesIdle(LED_COLOR_OFF);
+        connection.setAllTilesColor(LED_COLOR_BLUE);
+
+        for(int i = 0; i < 4; i++){
+            connection.setTileColorCountdown(LED_COLOR_BLUE, i,60);
+        }
     }
 
     @Override
@@ -43,16 +48,14 @@ public class FinalCountdown extends Game {
         super.onGameUpdate(message);
 
         int event = AntData.getCommand(message);
-        int color = AntData.getColorFromPress(message);
+        int tile = AntData.getId(message);
 
-        if (event == AntData.EVENT_PRESS && color==colorList.get(0)){
-
-            incrementPlayerScore(1,0);
+        if (event == AntData.CMD_COUNTDOWN_TIMEUP) {
+            stopGame();
+        } else if (event == AntData.EVENT_PRESS){
+            incrementPlayerScore(1, 0);
+            connection.setTileColorCountdown(LED_COLOR_BLUE, tile, 60);
         }
-        else {
-            incrementPlayerScore(-2,0);
-        }
-        updateTiles();
     }
 
     // Some animation on the tiles once the game is over
@@ -62,15 +65,5 @@ public class FinalCountdown extends Game {
         super.onGameEnd();
         connection.setAllTilesBlink(4,LED_COLOR_RED);
 
-    }
-
-    public void updateTiles(){
-        connection.setAllTilesIdle(LED_COLOR_OFF);
-        int randomTile = connection.randomIdleTile();
-
-        Collections.shuffle(colorList);
-
-        connection.setAllTilesColor(colorList.get(1));
-        connection.setTileColor( colorList.get(0) , randomTile);
     }
 }
