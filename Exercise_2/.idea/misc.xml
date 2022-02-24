@@ -3,9 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-<<<<<<< HEAD
-        <entry key="..\:/Users/Alonso/Desktop/PlaywareFrameworks/Exercise_2/app/src/main/res/layout/activity_main.xml" value="0.176" />
-        <entry key="..\:/Users/Alonso/Desktop/PlaywareFrameworks/Exercise_2/app/src/main/res/layout/game_layout.xml" value="0.175" />
+        <entry key="..\:/Users/Alonso/Desktop/Exercise_2_Solution/Exercise_2_Solution/app/src/main/res/layout/activity_game.xml" value="0.1" />
+        <entry key="..\:/Users/Alonso/Desktop/Exercise_2_Solution/Exercise_2_Solution/app/src/main/res/layout/activity_main.xml" value="0.1" />
       </map>
     </option>
   </component>
@@ -15,13 +14,4 @@
   <component name="ProjectType">
     <option name="id" value="Android" />
   </component>
-=======
-        <entry key="app/src/main/res/layout/activity_game.xml" value="0.19610507246376813" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.19610507246376813" />
-      </map>
-    </option>
-  </component>
-  <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
->>>>>>> 7778806ed028f302415c8126ab2c6bf291ad0b25
 </project>

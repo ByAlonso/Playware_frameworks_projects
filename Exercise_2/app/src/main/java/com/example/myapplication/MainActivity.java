@@ -2,7 +2,6 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,11 +16,10 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
 
     MotoConnection connection;
     Button pairingButton;
-    Button playingButton;
+    Button startButton;
+    TextView statusTextView;
     boolean isPairing = false;
-    boolean isPlaying = false;
 
-    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -31,9 +29,10 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
         connection=MotoConnection.getInstance();
         connection.startMotoConnection(MainActivity.this);
         connection.saveRfFrequency(36); // See the back of your tile for your group’s RF
-        connection.setDeviceId(1); //Your group number
+        connection.setDeviceId(3); //Your group number
         connection.registerListener(MainActivity.this);
 
+        statusTextView = findViewById(R.id.statusTextView);
         pairingButton = findViewById(R.id.pairingButton);
         pairingButton.setText("Pairing Button");
         pairingButton.setOnClickListener(new View.OnClickListener() {
@@ -49,21 +48,13 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
                 isPairing = !isPairing;
             }
         });
-
-        GameName game = new GameName();
-        playingButton = findViewById(R.id.playingButton);
-        playingButton.setOnClickListener(new View.OnClickListener() {
-
+        startButton = findViewById(R.id.startGameButton);
+        startButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                if(!isPlaying){
-                    game.onGameStart();
-                    playingButton.setText("Stop Playing");
-                } else {
-                   game.onGameEnd();
-                    playingButton.setText("Start Playing");
-                }
-                isPlaying = !isPlaying;
+                connection.unregisterListener(MainActivity.this);
+                Intent intent = new Intent(MainActivity.this, GameActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -83,7 +74,14 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
     @Override
     public void onNumbersOfTilesConnected(int i)
     {
-
+        runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                statusTextView.setText(i +" connected tiles");
+            }
+        });
     }
 
     @Override
@@ -98,7 +96,6 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
     protected void onRestart()
     {
         super.onRestart();
-        connection.startMotoConnection(MainActivity.this);
         connection.registerListener(MainActivity.this);
     }
 
