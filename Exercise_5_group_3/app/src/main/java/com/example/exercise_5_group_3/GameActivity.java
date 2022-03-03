@@ -1,8 +1,12 @@
 package com.example.exercise_5_group_3;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -13,13 +17,21 @@ import com.livelife.motolibrary.GameType;
 import com.livelife.motolibrary.MotoConnection;
 import com.livelife.motolibrary.OnAntEventListener;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+
 public class GameActivity extends AppCompatActivity implements OnAntEventListener
 {
     MotoConnection connection = MotoConnection.getInstance();
-    //ColourRace game_object = new ColourRace();
     AdaptiveGame game_object = new AdaptiveGame(); // Game object
     LinearLayout gt_container;
-    Button playButton = findViewById(R.id.playButton);
+    Button playButton;
+    LinearLayout colorBox;
+    Map<Integer, Integer> colorDict = new HashMap<Integer, Integer>();
+
 
 
     //Stop the game when we exit activity
@@ -34,9 +46,22 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        playButton = findViewById(R.id.playButton);
+        colorBox = findViewById(R.id.target_color_box);
+
+        this.colorDict.put(1,android.R.color.holo_red_dark);
+        this.colorDict.put(2,android.R.color.holo_blue_dark);
+        this.colorDict.put(3,android.R.color.holo_green_dark);
+        this.colorDict.put(4, android.R.color.holo_red_light);
+        this.colorDict.put(5,android.R.color.holo_orange_dark);
+        this.colorDict.put(6,android.R.color.white);
+        this.colorDict.put(7,android.R.color.holo_purple);
+
 
         connection.registerListener(this);
         connection.setAllTilesToInit();
+
+
 
         gt_container = findViewById(R.id.game_type_container);
         playButton.setOnClickListener(new View.OnClickListener()
@@ -44,8 +69,12 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
             @Override
             public void onClick(View v)
             {
+
                 game_object.selectedGameType = game_object.getGameTypes().get(0);
                 game_object.startGame();
+                colorBox.setBackgroundColor(getResources().getColor(colorDict.get(game_object.getTargetColor())));
+                Log.i("TAG0_COL",Integer.toString(game_object.getTargetColor()));
+
             }
         });
 
@@ -54,8 +83,8 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
 
             TextView scoreValue = findViewById(R.id.scoreValue);
             TextView timeValue = findViewById(R.id.timeValue);
-            @Override
 
+            @Override
             public void onGameTimerEvent(int i)
             {
                 timeValue.setText("Time: " + String.valueOf(i));
@@ -64,6 +93,9 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
             @Override
             public void onGameScoreEvent(int i, int i1)
             {
+                game_object.updateTiles();
+                colorBox.setBackgroundColor(getResources().getColor(colorDict.get(game_object.getTargetColor())));
+                Log.i("TAG0_COL",Integer.toString(game_object.getTargetColor()));
                 scoreValue.setText(String.valueOf(i));
             }
 
@@ -97,6 +129,8 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
     public void onMessageReceived(byte[] bytes, long l)
     {
         game_object.addEvent(bytes);
+
+
     }
 
     @Override
