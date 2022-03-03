@@ -44,10 +44,22 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
             @Override
             public void onClick(View v)
             {
+<<<<<<< Updated upstream
                 game_object.selectedGameType = game_object.getGameTypes().get(0);
                 game_object.startGame();
             }
         });
+=======
+                @Override
+                public void onClick(View v)
+                {
+                    game_object.selectedGameType = gt;
+                    game_object.startGame();
+                }
+            });
+            gt_container.addView(b);
+        }
+>>>>>>> Stashed changes
 
         game_object.setOnGameEventListener(new Game.OnGameEventListener()
         {

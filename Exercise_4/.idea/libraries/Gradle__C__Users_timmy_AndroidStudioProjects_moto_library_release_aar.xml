@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: C./Users/timmy/AndroidStudioProjects/moto_library-release.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/06e896d8072446441165b335ca77499d/transformed/moto_library-release/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/06e896d8072446441165b335ca77499d/transformed/moto_library-release/jars/libs/android_antlib_4-14-0.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/06e896d8072446441165b335ca77499d/transformed/moto_library-release/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/06e896d8072446441165b335ca77499d/transformed/moto_library-release/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
