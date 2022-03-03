@@ -14,19 +14,22 @@ import java.util.Collections;
 
 public class FinalCountdown extends Game {
     MotoConnection connection = MotoConnection.getInstance();
-
+    int tileSpeed = 60;
 
     FinalCountdown(){
         setName("Final Countdown");
 
-        GameType gt = new GameType(1, GameType.GAME_TYPE_TIME, 30, "1 player 30 sec",1);
+        GameType gt = new GameType(1, GameType.GAME_TYPE_SPEED, 60, "Slow",1);
         addGameType(gt);
 
-        GameType gt2 = new GameType(2, GameType.GAME_TYPE_TIME, 60, "1 player 1 min",1);
+        GameType gt2 = new GameType(2, GameType.GAME_TYPE_SPEED, 40, "Medium",1);
         addGameType(gt2);
 
-        GameType gt3 = new GameType(3, GameType.GAME_TYPE_TIME, 60*2, "1 player 2 min",1);
+        GameType gt3 = new GameType(3, GameType.GAME_TYPE_SPEED, 20, "Fast",1);
         addGameType(gt3);
+
+        GameType gt4 = new GameType(4, GameType.GAME_TYPE_SPEED, 10, "Ultra-instinct",1);
+        addGameType(gt4);
     }
 
     @Override
@@ -34,11 +37,11 @@ public class FinalCountdown extends Game {
     {
         super.onGameStart();
         clearPlayersScore();
-        connection.setAllTilesIdle(LED_COLOR_OFF);
+        //connection.setAllTilesIdle(LED_COLOR_OFF);
         connection.setAllTilesColor(LED_COLOR_BLUE);
 
-        for(int i = 0; i < 4; i++){
-            connection.setTileColorCountdown(LED_COLOR_BLUE, i,60);
+        for(int i = 1; i <= 4; i++){
+            connection.setTileColorCountdown(LED_COLOR_BLUE, i, this.tileSpeed);
         }
     }
 
@@ -54,7 +57,7 @@ public class FinalCountdown extends Game {
             stopGame();
         } else if (event == AntData.EVENT_PRESS){
             incrementPlayerScore(1, 0);
-            connection.setTileColorCountdown(LED_COLOR_BLUE, tile, 60);
+            connection.setTileColorCountdown(LED_COLOR_BLUE, tile, this.tileSpeed);
         }
     }
 
@@ -65,5 +68,9 @@ public class FinalCountdown extends Game {
         super.onGameEnd();
         connection.setAllTilesBlink(4,LED_COLOR_RED);
 
+    }
+
+    public void setTileSpeed(int speed){
+        this.tileSpeed = speed;
     }
 }

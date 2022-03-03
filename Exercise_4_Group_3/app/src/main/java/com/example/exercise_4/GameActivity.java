@@ -50,6 +50,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
                 public void onClick(View v)
                 {
                     game_object.selectedGameType = gt;
+                    game_object.setTileSpeed(gt.getGoal());
                     game_object.startGame();
                 }
             });
