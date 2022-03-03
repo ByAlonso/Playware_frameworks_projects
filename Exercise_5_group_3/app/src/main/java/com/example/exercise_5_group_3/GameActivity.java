@@ -19,7 +19,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
     //ColourRace game_object = new ColourRace();
     AdaptiveGame game_object = new AdaptiveGame(); // Game object
     LinearLayout gt_container;
-    Button playButton = findViewById(R.id.playButton);
+
 
 
     //Stop the game when we exit activity
@@ -39,17 +39,13 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
         connection.setAllTilesToInit();
 
         gt_container = findViewById(R.id.game_type_container);
-        playButton.setOnClickListener(new View.OnClickListener()
+
+        for (final GameType gt : game_object.getGameTypes())
         {
-            @Override
-            public void onClick(View v)
+            Button b = new Button(this);
+            b.setText(gt.getName());
+            b.setOnClickListener(new View.OnClickListener()
             {
-<<<<<<< Updated upstream
-                game_object.selectedGameType = game_object.getGameTypes().get(0);
-                game_object.startGame();
-            }
-        });
-=======
                 @Override
                 public void onClick(View v)
                 {
@@ -59,7 +55,6 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
             });
             gt_container.addView(b);
         }
->>>>>>> Stashed changes
 
         game_object.setOnGameEventListener(new Game.OnGameEventListener()
         {
@@ -70,6 +65,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
 
             public void onGameTimerEvent(int i)
             {
+
                 timeValue.setText("Time: " + String.valueOf(i));
             }
 

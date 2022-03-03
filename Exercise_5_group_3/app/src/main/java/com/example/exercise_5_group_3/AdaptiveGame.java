@@ -84,7 +84,7 @@ public class AdaptiveGame extends Game {
 
         Collections.shuffle(colorList);
 
-        for(int tile : connection.connectedTiles) {
+        for(int tile = 1; tile < 5; tile++) {
             connection.setTileColor(colorList.get(tile), tile);
         }
 

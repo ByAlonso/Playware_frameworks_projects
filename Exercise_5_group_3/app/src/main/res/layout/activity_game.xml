@@ -45,16 +45,6 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="100dp" />
-        <LinearLayout
-            android:id="@+id/targetId"
-            android:layout_height="100dp"
-            android:layout_width="match_parent"
-            android:orientation="vertical" />
-        <Button
-            android:id="@+id/playButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Play the game!" />
     </LinearLayout>
 
 </RelativeLayout>
