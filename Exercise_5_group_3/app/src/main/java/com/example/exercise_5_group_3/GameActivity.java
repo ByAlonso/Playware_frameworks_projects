@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.livelife.motolibrary.AntData;
 import com.livelife.motolibrary.Game;
 import com.livelife.motolibrary.GameType;
 import com.livelife.motolibrary.MotoConnection;
@@ -21,6 +22,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class GameActivity extends AppCompatActivity implements OnAntEventListener
@@ -31,6 +34,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
     Button playButton;
     LinearLayout colorBox;
     Map<Integer, Integer> colorDict = new HashMap<Integer, Integer>();
+    int delay = 4000;
 
 
 
@@ -87,7 +91,17 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
             @Override
             public void onGameTimerEvent(int i)
             {
-                timeValue.setText("Time: " + String.valueOf(i));
+                if (i < 0)
+                {
+                    if (delay >= 2000)
+                    {
+                        delay += i;
+                    }
+                }
+                else
+                {
+                    delay += i;
+                }
             }
 
             @Override
@@ -123,6 +137,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
 
             }
         });
+
     }
 
     @Override

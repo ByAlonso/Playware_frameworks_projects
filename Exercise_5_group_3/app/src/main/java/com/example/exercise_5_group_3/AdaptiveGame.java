@@ -20,13 +20,14 @@ import java.util.Random;
 public class AdaptiveGame extends Game {
     MotoConnection connection = MotoConnection.getInstance();
     int timeMs = 7;
+    int round = 0;
     int targetColor = 1;
     ArrayList<Integer> colorList = AntData.allColors();
 
     AdaptiveGame(){
         setName("Adaptive Game");
 
-        GameType gt = new GameType(1, GameType.GAME_TYPE_SCORE, timeMs, "Score",1);
+        GameType gt = new GameType(1, GameType.GAME_TYPE_TIME, timeMs, "Score",1);
         addGameType(gt);
 
     }
@@ -52,6 +53,9 @@ public class AdaptiveGame extends Game {
         int event = AntData.getCommand(message);
         int tile = AntData.getId(message);
         int color = AntData.getColorFromPress(message);
+        if (round == 7){
+            this.onGameEnd();
+        }
         if (event == EVENT_PRESS)
         {
             // Correct tile block
@@ -74,6 +78,7 @@ public class AdaptiveGame extends Game {
             incrementPlayerScore(0,1); // No change to the score
             this.getOnGameEventListener().onGameTimerEvent(timeMs); // No change to the timing
         }
+        round += 1;
         //updateTiles();
     }
 
