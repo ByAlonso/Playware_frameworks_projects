@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GameActivity">
+
+    <LinearLayout
+        android:id="@+id/game_type_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="22dp"
+        android:orientation="horizontal">
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Score:"
+        android:textSize="44sp"
+        android:layout_marginEnd="8dp"/>
+
+    <TextView
+        android:id="@+id/colour_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="A colour"
+        android:textSize="44sp"
+        android:layout_above="@id/score"
+        android:layout_marginEnd="8dp"/>
+
+    <TextView
+        android:id="@+id/round"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Round"
+        android:textSize="44sp"
+        android:layout_above="@id/colour_name"
+        android:layout_marginEnd="8dp"/>
+
+    <TextView
+        android:id="@+id/round_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="#"
+        android:textSize="44sp"
+        android:layout_toRightOf="@id/round"
+        android:layout_above="@id/colour_name"
+        android:layout_marginEnd="8dp"/>
+
+    <TextView
+        android:id="@+id/score_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="#"
+        android:layout_centerInParent="true"
+        android:layout_alignParentTop="false"
+        android:textSize="44sp"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@id/score"/>
+
+
+</RelativeLayout>
