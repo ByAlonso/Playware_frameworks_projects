@@ -4,6 +4,7 @@ import static com.livelife.motolibrary.AntData.LED_COLOR_BLUE;
 import static com.livelife.motolibrary.AntData.LED_COLOR_OFF;
 import static com.livelife.motolibrary.AntData.LED_COLOR_RED;
 
+import android.os.Handler;
 import android.util.Log;
 
 import com.livelife.motolibrary.AntData;
@@ -29,13 +30,15 @@ public class ColourRace extends Game
         addGameType(gt3);
     }
 
+
     // Some game setup stuff
     @Override
     public void onGameStart()
     {
         super.onGameStart();
+
         connection.setAllTilesIdle(LED_COLOR_OFF);
-        //updateTiles();          //Set off and then turn one blue
+        updateTiles();          //Set off and then turn one blue
     }
 
     // Put game logic here
@@ -63,6 +66,7 @@ public class ColourRace extends Game
     public void onGameEnd()
     {
         super.onGameEnd();
+
 
         connection.setAllTilesBlink(4,LED_COLOR_RED);
     }

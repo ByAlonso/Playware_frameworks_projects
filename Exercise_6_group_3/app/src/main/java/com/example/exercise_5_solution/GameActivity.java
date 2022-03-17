@@ -68,7 +68,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
             {
                 if (i < 0)
                 {
-                    if (delay >= 1000)          //We need at least 1 sec to press the tile
+                    if (delay > 1000)          //We need at least 1 sec to press the tile
                     {
                         delay += i;
                     }
@@ -84,6 +84,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
             {
                 // Updating the score
                 points_scored = i;
+                game_object.updateTiles();
                 GameActivity.this.runOnUiThread(new Runnable()
                 {
                     @Override
@@ -119,26 +120,24 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
             }
         });
 
-        // Displaying each colour for a certain period of time (default - 3000 ms)
-        final Handler h = new Handler();
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                game_object.updateTiles();
-            }
-        };
         Thread my_thread = new Thread()
         {
+            Handler h = new Handler();
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    game_object.updateTiles();
+                    h.postDelayed(this,delay);
+                }
 
-            String end_message = "Game Over"; // This message is displayed at the end of the last round
-            int round = 1; // Stores the current round number
+            };
             @Override
             public void run(){
-                runOnUiThread(r);
+                game_object.updateTiles();
+                h.postDelayed(r,delay);
             }
 
         };
-        h.postDelayed(r,delay);
         my_thread.start();
 
 
