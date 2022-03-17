@@ -22,36 +22,6 @@
         android:textSize="44sp"
         android:layout_marginEnd="8dp"/>
 
-    <TextView
-        android:id="@+id/colour_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="A colour"
-        android:textSize="44sp"
-        android:layout_above="@id/score"
-        android:layout_marginEnd="8dp"/>
-
-    <TextView
-        android:id="@+id/round"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Round"
-        android:textSize="44sp"
-        android:layout_above="@id/colour_name"
-        android:layout_marginEnd="8dp"/>
-
-    <TextView
-        android:id="@+id/round_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="#"
-        android:textSize="44sp"
-        android:layout_toRightOf="@id/round"
-        android:layout_above="@id/colour_name"
-        android:layout_marginEnd="8dp"/>
 
     <TextView
         android:id="@+id/score_value"

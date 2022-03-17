@@ -48,7 +48,7 @@ public class ColourRace extends Game
         int color= AntData.getColorFromPress(message);
         if (event == AntData.EVENT_PRESS)
         {
-            if(color!=LED_COLOR_OFF) {
+            if(color!=LED_COLOR_OFF) {      //If the correct tile is pressed
                 incrementPlayerScore(1,0);
                 this.getOnGameEventListener().onGameTimerEvent(-200);
             }
@@ -66,7 +66,7 @@ public class ColourRace extends Game
 
         connection.setAllTilesBlink(4,LED_COLOR_RED);
     }
-    public void updateTiles(){
+    public void updateTiles(){          //Turns on a random tile
         int randomTile = connection.randomIdleTile();
         connection.setAllTilesIdle(LED_COLOR_OFF);
         connection.setTileColor(LED_COLOR_BLUE, randomTile);
