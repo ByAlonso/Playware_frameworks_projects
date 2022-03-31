@@ -71,8 +71,8 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
         sound = MotoSound.getInstance();
 
         connection.startMotoConnection(this);
-        connection.saveRfFrequency(76);
-        connection.setDeviceId(7);
+        connection.saveRfFrequency(36);
+        connection.setDeviceId(3);
         connection.registerListener(this);
 
 

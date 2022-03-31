@@ -71,9 +71,17 @@
     <ListView
         android:id="@+id/challengeList"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:drawSelectorOnTop="false"
         android:layout_below="@id/postGameChallenge"
+        />
+
+    <TextView
+        android:id="@+id/challengeStatusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/challengeList"
+        android:layout_centerHorizontal="true"
         />
 
 
@@ -96,13 +104,7 @@
         android:layout_centerHorizontal="true"
         />
 
-    <TextView
-        android:id="@+id/challengeStatusText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/scoreText"
-        android:layout_centerHorizontal="true"
-        />
+
 
 
 

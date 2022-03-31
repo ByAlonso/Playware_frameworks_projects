@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Debug;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -24,19 +23,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.UUID;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import static com.livelife.motolibrary.AntData.EVENT_PRESS;
 import static com.livelife.motolibrary.AntData.LED_COLOR_OFF;
@@ -62,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
 
     ListView challengeList;
     ArrayAdapter<String> adapter;
-    ArrayList<String> serializedItems = new ArrayList<>(Arrays.asList("demo challenge","demo challenge 2"));
+    ArrayList<String> listItems = new ArrayList<>();
 
     TextView apiOutput;
     String endpoint = "https://centerforplayware.com/api/index.php";
@@ -134,7 +123,8 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
         });
 
         simulateGetGameSessions = findViewById(R.id.simulateGetGameSessions);
-        simulateGetGameSessions.setOnClickListener(new View.OnClickListener() {
+        simulateGetGameSessions.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
                 getGameSessions();
@@ -159,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
             public void onClick(View v) {
                 getGameChallenge();
             }
+
         });
 
         postGameChallenge = findViewById(R.id.postGameChallenge);
@@ -176,34 +167,22 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
         challengeList = findViewById(R.id.challengeList);
 
         adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, serializedItems);
+                android.R.layout.simple_list_item_1, listItems);
         challengeList.setAdapter(adapter);
 
         challengeList.setOnItemClickListener((parent, view, position, id) -> {
             new AlertDialog.Builder(view.getContext())
                     .setTitle("Accept this challenge?")
-                    .setPositiveButton("Accept", (dialog, which) -> dialog.cancel())
-//                    {
-//                        if(isStatusCreated(items.get(position)) &&
-//                                challengeManager.postGameChallengeAccept(getDeviceToken(),
-//                                        String.valueOf(items.get(position).getGcid()),"testName")){
-//                            new AlertDialog.Builder(view.getContext())
-//                                    .setTitle("Accepted Challenge!")
-//                                    // A null listener allows the button to dismiss the dialog and take no further action.
-//                                    .setNegativeButton(android.R.string.no, null)
-//                                    .setIcon(android.R.drawable.ic_dialog_alert)
-//                                    .show();
-//                        }else{
-//                            new AlertDialog.Builder(view.getContext())
-//                                    .setTitle("Failed to accept challenge! Has it already been accepted?")
-//                                    // A null listener allows the button to dismiss the dialog and take no further action.
-//                                    .setNegativeButton(android.R.string.no, null)
-//                                    .setIcon(android.R.drawable.ic_dialog_alert)
-//                                    .show();
-//
-//                        }
-//                        dialog.cancel();
-
+                    .setPositiveButton("Accept", (dialog, which) ->
+                    {
+                        postGameChallengeAccept("Max",String.valueOf(listItems.get(position)));
+                        new AlertDialog.Builder(view.getContext())
+                                .setTitle("Accepted Challenge!")
+                                // A null listener allows the button to dismiss the dialog and take no further action.
+                                .setNegativeButton(android.R.string.no, null)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    })
                     .setNegativeButton("Decline", (dialog, which) ->  dialog.cancel())
                     .show();
         });
@@ -291,14 +270,16 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
     }
 
 
-    private void postGameChallengeAccept() {
+
+
+    private void postGameChallengeAccept(String name, String challengeId) {
         RemoteHttpRequest requestPackage = new RemoteHttpRequest();
         requestPackage.setMethod("POST");
         requestPackage.setUrl(endpoint);
         requestPackage.setParam("method","postGameChallengeAccept"); // The method name
         requestPackage.setParam("device_token",getDeviceToken()); // Your device token
-        requestPackage.setParam("challenged_name","1"); // The name of the person accepting the challenge
-        requestPackage.setParam("gcid","1"); // The game challenge id you want to accept
+        requestPackage.setParam("challenged_name",name); // The name of the person accepting the challenge
+        requestPackage.setParam("gcid",challengeId); // The game challenge id you want to accept
 
 
         Downloader downloader = new Downloader(); //Instantiation of the Async task
@@ -325,8 +306,8 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
                 Log.i("sessions",message);
 
                 // Log the entire response if needed to check the data structure
-                Log.i("sessions",jsonObject.toString());
-
+                Log.i("JSON",jsonObject.toString());
+                Log.i("JSON_Method",jsonObject.getString("method"));
                 // Log response
                 Log.i("sessions","response: "+jsonObject.getBoolean("response"));
                 // Update UI
@@ -334,20 +315,26 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
 
 
 
-                if(jsonObject.getString("method") == "getGameSessions") {
-
+                if(jsonObject.getString("method").equals("getGameChallenge")) {
+                    Log.i("aaaaa",",session.toString()");
+                    listItems.clear();
+                    adapter.notifyDataSetChanged();
                     JSONArray sessions = jsonObject.getJSONArray("results");
+
                     for(int i = 0; i < sessions.length();i++) {
                         JSONObject session = sessions.getJSONObject(i);
-                        Log.i("sessions",session.toString());
-
+                        Log.i("aaaaa",session.toString());
+                        listItems.add(session.getString("gcid"));
+                        //listItems.add(session.getString("created"));
+                        adapter.notifyDataSetChanged();
+                        Log.i("aaaaa","String.valueOf(listItems.size())");
                         // get score example:
                         // String score = session.getString("game_score");
 
                     }
 
                 }
-                else if(jsonObject.getString("method") == "postGameSession") {
+                else if(jsonObject.getString("method").equals("postGameSession")) {
 
                     Log.i("sessions",message);
 
@@ -355,7 +342,7 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
 
 
                 }
-                else if(jsonObject.getString("method") == "postGameChallenge") {
+                else if(jsonObject.getString("method").equals("postGameChallenge")) {
 
                     Log.i("challenge",message);
 
@@ -363,18 +350,19 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
 
 
                 }
-                else if(jsonObject.getString("method") == "getGameChallenge") {
+                else if(jsonObject.getString("method").equals("getGameChallenge")) {
                     int status =0;
                     JSONArray challenges = jsonObject.getJSONArray("results");
                     for(int i = 0; i < challenges.length();i++) {
                         JSONObject challenge = challenges.getJSONObject(i);
                         Log.i("challenge",challenge.toString());
                         status  = challenge.getInt("c_status");
+                        challengeStatusText.setText(statusText.get(status));
                         if(status == 4) {
                             Log.i("challenge",challenge.getJSONArray("summary").toString());
                         }
                     }
-                    challengeStatusText.setText(statusText.get(status));
+
 
                     // Update UI
                 }
