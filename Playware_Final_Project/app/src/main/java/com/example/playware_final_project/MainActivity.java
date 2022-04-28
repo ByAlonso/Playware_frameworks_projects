@@ -3,6 +3,7 @@ package com.example.playware_final_project;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
     Button pairingButton, startGameButton;
     TextView statusTextView; // To display the number of tiles connected
     boolean is_pairing = false;
+    public static MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -26,8 +28,8 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
 
         connection=MotoConnection.getInstance();
         connection.startMotoConnection(MainActivity.this);
-        connection.saveRfFrequency(72);         // Check the back of your tiles for the RF
-        connection.setDeviceId(4);              // Your group number
+        connection.saveRfFrequency(36);         // Check the back of your tiles for the RF
+        connection.setDeviceId(3);              // Your group number
         connection.registerListener(MainActivity.this);
 
         statusTextView = findViewById(R.id.statusTextView);
