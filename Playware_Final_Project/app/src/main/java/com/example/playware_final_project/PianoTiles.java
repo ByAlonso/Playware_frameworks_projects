@@ -20,8 +20,9 @@ public class PianoTiles extends Game
 {
     MotoConnection connection = MotoConnection.getInstance();
     int random_tile_id;
-    ArrayList<Integer> sounds_order = new ArrayList(10);
-    ArrayList<Integer> color_order = new ArrayList(10);
+    ArrayList<Integer> sounds_order = new ArrayList(42);
+    ArrayList<Integer> color_order = new ArrayList(42);
+    //Twinkle twinkle has 42 notes
     public static MediaPlayer mediaPlayer;
 
     PianoTiles()
@@ -44,11 +45,58 @@ public class PianoTiles extends Game
         connection.setTileColor(4,4);
 
 
-        for(int i = 0; i < 10; i++){
-            sounds_order.add(i);
-        }
+        //Adding the order of the sounds to the array
+        sounds_order.add(1);
+        sounds_order.add(1);
+        sounds_order.add(7);
+        sounds_order.add(7);
+        sounds_order.add(0);
+        sounds_order.add(0);
+        sounds_order.add(8);
 
-        for(int i = 0; i < 10; i++){
+        sounds_order.add(6);
+        sounds_order.add(6);
+        sounds_order.add(5);
+        sounds_order.add(5);
+        sounds_order.add(3);
+        sounds_order.add(3);
+        sounds_order.add(2);
+
+        sounds_order.add(7);
+        sounds_order.add(7);
+        sounds_order.add(6);
+        sounds_order.add(6);
+        sounds_order.add(5);
+        sounds_order.add(5);
+        sounds_order.add(4);
+
+        sounds_order.add(7);
+        sounds_order.add(7);
+        sounds_order.add(6);
+        sounds_order.add(6);
+        sounds_order.add(5);
+        sounds_order.add(5);
+        sounds_order.add(4);
+
+        sounds_order.add(1);
+        sounds_order.add(1);
+        sounds_order.add(7);
+        sounds_order.add(7);
+        sounds_order.add(0);
+        sounds_order.add(0);
+        sounds_order.add(8);
+
+        sounds_order.add(6);
+        sounds_order.add(6);
+        sounds_order.add(5);
+        sounds_order.add(5);
+        sounds_order.add(3);
+        sounds_order.add(3);
+        sounds_order.add(2);
+
+
+        //Fill random color orders
+        for(int i = 0; i < color_order.size(); i++){
             color_order.add(getRandomNumber(1,4));
         }
     }

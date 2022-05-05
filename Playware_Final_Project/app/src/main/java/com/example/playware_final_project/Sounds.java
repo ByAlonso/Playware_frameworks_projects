@@ -47,5 +47,8 @@ public class Sounds {
                 break;
         }
         mediaPlayer.start();
+        //Check if we need a delay to let the sound be played
+        //mediaPlayer.release();
+        //mediaPlayer = null;
     }
 }
