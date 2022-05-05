@@ -31,16 +31,18 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
     LinearLayout gt_container;
     int points_scored =0;
     ArrayList<Integer> sounds_order = new ArrayList(42);
-    MediaPlayer a5_m = MediaPlayer.create(this, R.raw.a5);
-    MediaPlayer c4_m = MediaPlayer.create(this, R.raw.c4);
-    MediaPlayer c4_long_m = MediaPlayer.create(this, R.raw.c4_long);
-    MediaPlayer d4_m = MediaPlayer.create(this, R.raw.d4);
-    MediaPlayer d4_long_m = MediaPlayer.create(this, R.raw.d4_long);
-    MediaPlayer e4_m = MediaPlayer.create(this, R.raw.e4);
-    MediaPlayer f4_m = MediaPlayer.create(this, R.raw.f4);
-    MediaPlayer g4_m = MediaPlayer.create(this, R.raw.g4);
-    MediaPlayer g4_long_m = MediaPlayer.create(this, R.raw.g4_long);
-    MediaPlayer error_m = MediaPlayer.create(this, R.raw.error);
+
+
+    MediaPlayer a5_m;
+    MediaPlayer c4_m;
+    MediaPlayer c4_long_m;
+    MediaPlayer d4_m;
+    MediaPlayer d4_long_m;
+    MediaPlayer e4_m ;
+    MediaPlayer f4_m ;
+    MediaPlayer g4_m ;
+    MediaPlayer g4_long_m ;
+    MediaPlayer error_m ;
 
     //ArrayList<MediaPlayer> mediaPlayers = new ArrayList<MediaPlayer>(10);
 
@@ -71,7 +73,8 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
 
 
         // UI
-        //initBtn();
+        initBtn();
+
 
         game_object.selectedGameType = game_object.getGameTypes().get(0);
         //sound.playStart();
@@ -98,6 +101,18 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
 //        final TextView game_round = findViewById(R.id.round_number); // Shows what round the user is on
         final TextView player_score = findViewById(R.id.score_value); // Where the player's score is displayed
 
+
+         a5_m = MediaPlayer.create(this, R.raw.a5);
+         c4_m = MediaPlayer.create(this, R.raw.c4);
+         c4_long_m = MediaPlayer.create(this, R.raw.c4_long);
+         d4_m = MediaPlayer.create(this, R.raw.d4);
+         d4_long_m = MediaPlayer.create(this, R.raw.d4_long);
+         e4_m = MediaPlayer.create(this, R.raw.e4);
+         f4_m = MediaPlayer.create(this, R.raw.f4);
+         g4_m = MediaPlayer.create(this, R.raw.g4);
+         g4_long_m = MediaPlayer.create(this, R.raw.g4_long);
+         error_m = MediaPlayer.create(this, R.raw.error);
+
         game_object.setOnGameEventListener(new Game.OnGameEventListener()
         {
             // Changing the time the user gets to hit the tile
@@ -112,6 +127,9 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
                 // Updating the score
                 points_scored = i;
                 playSound(sounds_order.get(i));
+
+                // advance in UI
+                getNext();
                 GameActivity.this.runOnUiThread(new Runnable()
                 {
                     @Override
@@ -209,12 +227,6 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
             default:
                 break;
         }
-
-
-
-        //Check if we need a delay to let the sound be played
-        //mediaPlayer.release();
-        //mediaPlayer = null;
     }
 
     private void initBtn() {
