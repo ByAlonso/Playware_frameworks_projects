@@ -33,6 +33,9 @@ public class PianoTiles extends Game {
     int currentTile = 0;
     int currentSound = 0;
 
+    ArrayList<Integer> sounds_order = new ArrayList(42);
+
+
 
     PianoTiles() {
         setName("Piano Tiles");
@@ -52,7 +55,7 @@ public class PianoTiles extends Game {
         Log.d("@@@", "Starting game");
 
 
-
+        Twinkle();
         connection.setAllTilesIdle(LED_COLOR_OFF);
         connection.setTileColor(1, connection.connectedTiles.get(0));
         connection.setTileColor(2, connection.connectedTiles.get(1));
@@ -62,9 +65,16 @@ public class PianoTiles extends Game {
         Log.d("@@@", "Preparing song");
 
 
-        //Fill random color orders
+        //Fill fixed color orders
         for (int i = 0; i < 42; i++) {
-            color_order.add(getRandomNumber(0, 4));
+            if (sounds_order.get(i) == 0 || sounds_order.get(i) == 4 || sounds_order.get(i) == 8  )
+            color_order.add(0);
+            else if (sounds_order.get(i) == 1 || sounds_order.get(i) == 5)
+            color_order.add(1);
+            if (sounds_order.get(i) == 2 || sounds_order.get(i) == 6)
+            color_order.add(2);
+            if (sounds_order.get(i) == 3 || sounds_order.get(i) == 7)
+            color_order.add(3);
 
         }
 
@@ -119,6 +129,58 @@ public class PianoTiles extends Game {
         return (int) ((Math.random() * (max - min)) + min);
     }
 
+    private void Twinkle(){
+        //Adding the order of the sounds to the array
+
+        sounds_order.add(1);
+        sounds_order.add(1);
+        sounds_order.add(7);
+        sounds_order.add(7);
+        sounds_order.add(0);
+        sounds_order.add(0);
+        sounds_order.add(8);
+
+        sounds_order.add(6);
+        sounds_order.add(6);
+        sounds_order.add(5);
+        sounds_order.add(5);
+        sounds_order.add(3);
+        sounds_order.add(3);
+        sounds_order.add(2);
+
+        sounds_order.add(7);
+        sounds_order.add(7);
+        sounds_order.add(6);
+        sounds_order.add(6);
+        sounds_order.add(5);
+        sounds_order.add(5);
+        sounds_order.add(4);
+
+        sounds_order.add(7);
+        sounds_order.add(7);
+        sounds_order.add(6);
+        sounds_order.add(6);
+        sounds_order.add(5);
+        sounds_order.add(5);
+        sounds_order.add(4);
+
+        sounds_order.add(1);
+        sounds_order.add(1);
+        sounds_order.add(7);
+        sounds_order.add(7);
+        sounds_order.add(0);
+        sounds_order.add(0);
+        sounds_order.add(8);
+
+        sounds_order.add(6);
+        sounds_order.add(6);
+        sounds_order.add(5);
+        sounds_order.add(5);
+        sounds_order.add(3);
+        sounds_order.add(3);
+        sounds_order.add(2);
+
+    }
 
 }
 
