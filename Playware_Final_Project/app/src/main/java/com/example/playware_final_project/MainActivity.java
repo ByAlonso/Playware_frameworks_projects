@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
     Button pairingButton, startGameButton;
     TextView statusTextView; // To display the number of tiles connected
     boolean is_pairing = false;
-    public static MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

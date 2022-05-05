@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Playware_Final_Project">
         <activity
+            android:name=".Ranking"
+            android:exported="false" />
+        <activity
+        android:name=".GameActivity"
+        android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
