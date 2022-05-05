@@ -1,9 +1,11 @@
 package com.example.finalpianotiles;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -88,6 +90,29 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void check(View view){
+        // Only bottom row should be check
+        int buttonId = view.getId();
+        if (buttonId == btn1a.getId() || buttonId == btn2a.getId() || buttonId == btn3a.getId() || buttonId == btn4a.getId()){
+            // Check if it is correct
+            Log.d("@@@", view.getBackground().getConstantState().toString());
+            if ( view.getBackground().equals(getResources().getDrawable(R.color.white).getConstantState())){
+                // ERROR CASE
+                Log.d("@@@", view.getBackground().toString());
+                Log.d("@@@", "error");
+            }
+            else {
+            Log.d("@@@", "correct");
+              getNext();
+            }
+        }
+        else Log.d("@@@", "not valid");
+
+
+
+
+    }
+
     private void initBtn() {
         btn1a = (Button) findViewById(R.id.btn1a);
         btn1a.setOnClickListener(this);
@@ -125,7 +150,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        getNext();
+
+       check(view);
         Log.d("@@@", "click");
     }
 }
