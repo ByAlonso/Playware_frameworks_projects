@@ -77,15 +77,14 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
         Twinkle();
 
         for (int i = 0; i < 42; i++) {
-            if (sounds_order.get(i) == 0 || sounds_order.get(i) == 4 || sounds_order.get(i) == 8  )
+            if (sounds_order.get(i) == 0 || sounds_order.get(i) == 6 )
                 color_order.add(0);
-            else if (sounds_order.get(i) == 1 || sounds_order.get(i) == 5)
+            else if (sounds_order.get(i) == 1 || sounds_order.get(i) == 2)
                 color_order.add(1);
-            if (sounds_order.get(i) == 2 || sounds_order.get(i) == 6)
+            if (sounds_order.get(i) == 3 || sounds_order.get(i) == 4)
                 color_order.add(2);
-            if (sounds_order.get(i) == 3 || sounds_order.get(i) == 7)
+            if (sounds_order.get(i) == 5 || sounds_order.get(i) == 7 || sounds_order.get(i) == 8)
                 color_order.add(3);
-
         }
 
         // UI
@@ -131,12 +130,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
          error_m = MediaPlayer.create(this, R.raw.error);
 
 
-
-
-
-
-        // Intialize the beggining of the song
-
+        // Initialise the beginning of the song
         getNextLine(0);
 
 
@@ -202,10 +196,9 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
                 if (points_scored == -1) {
                     playSound(9);
                 } else {
-                    playSound(sounds_order.get(i));
+                    playSound(sounds_order.get(i-1));
 
                     // advance in UI
-
                     getNextLine(i);
                     GameActivity.this.runOnUiThread(new Runnable() {
                         @Override
@@ -351,11 +344,36 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
 
     private void getNextLine(int i){
         ArrayList<Integer> nextColors = new ArrayList<>(4);
-        nextColors.add(color_order.get(i));
-        nextColors.add(color_order.get(i+1));
-        nextColors.add(color_order.get(i+2));
-        nextColors.add(color_order.get(i+3));
 
+        // Edge case: Last notes (make it nice)
+
+        if (i>=42){
+            // Everything goes blank
+        }
+
+        else if (i>=42 -1){
+            nextColors.add(color_order.get(i));
+        }
+
+        else if (i>=42 -2){
+            nextColors.add(color_order.get(i));
+            nextColors.add(color_order.get(i+1));
+        }
+        else if (i>=42 -3){
+            nextColors.add(color_order.get(i));
+            nextColors.add(color_order.get(i+1));
+            nextColors.add(color_order.get(i+2));
+        }
+
+        // Rest of notes
+        else {
+            nextColors.add(color_order.get(i));
+            nextColors.add(color_order.get(i + 1));
+            nextColors.add(color_order.get(i + 2));
+            nextColors.add(color_order.get(i + 3));
+        }
+
+        // By default, we clear all the colors
 
         btn1a.setBackgroundColor(getResources().getColor(R.color.white));
         btn1b.setBackgroundColor(getResources().getColor(R.color.white));
@@ -375,6 +393,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
         btn4d.setBackgroundColor(getResources().getColor(R.color.white));
 
 
+        // For each of the next four notes, we color the  button corresponding with the note
         for(int j=0; j< nextColors.size(); j++){
             if(j==0){
                 if(nextColors.get(j) == 0)

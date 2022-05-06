@@ -69,14 +69,14 @@ public class PianoTiles extends Game {
 
         //Fill fixed color orders
         for (int i = 0; i < 42; i++) {
-            if (sounds_order.get(i) == 0 || sounds_order.get(i) == 4 || sounds_order.get(i) == 8  )
-            color_order.add(0);
-            else if (sounds_order.get(i) == 1 || sounds_order.get(i) == 5)
-            color_order.add(1);
-            if (sounds_order.get(i) == 2 || sounds_order.get(i) == 6)
-            color_order.add(2);
-            if (sounds_order.get(i) == 3 || sounds_order.get(i) == 7)
-            color_order.add(3);
+            if (sounds_order.get(i) == 0 || sounds_order.get(i) == 6 )
+                color_order.add(0);
+            else if (sounds_order.get(i) == 1 || sounds_order.get(i) == 2)
+                color_order.add(1);
+            if (sounds_order.get(i) == 3 || sounds_order.get(i) == 4)
+                color_order.add(2);
+            if (sounds_order.get(i) == 5 || sounds_order.get(i) == 7 || sounds_order.get(i) == 8)
+                color_order.add(3);
 
         }
 
@@ -110,7 +110,7 @@ public class PianoTiles extends Game {
                 incrementPlayerScore(1, 1);
             } else // Incorrect tile block
             {
-
+                super.getOnGameEventListener().onGameScoreEvent(-1,1);
                 Log.d("@@@", "inCorrect");
                // Sounds.playSound(9);
             }
