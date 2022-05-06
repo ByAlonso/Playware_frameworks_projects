@@ -4,6 +4,7 @@ import static com.example.playware_final_project.Sounds.context;
 import static com.livelife.motolibrary.AntData.EVENT_PRESS;
 import static com.livelife.motolibrary.AntData.LED_COLOR_INDIGO;
 import static com.livelife.motolibrary.AntData.LED_COLOR_OFF;
+import static com.livelife.motolibrary.AntData.LED_COLOR_ORANGE;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -77,7 +78,6 @@ public class PianoTiles extends Game {
                 color_order.add(2);
             if (sounds_order.get(i) == 5 || sounds_order.get(i) == 7 || sounds_order.get(i) == 8)
                 color_order.add(3);
-
         }
 
 
@@ -100,6 +100,9 @@ public class PianoTiles extends Game {
 
         if (event == EVENT_PRESS) {
             // Correct tile block
+            if(currentTile > 41)
+                onGameEnd();
+            else {
             int tileNeeded = color_order.get(currentTile);
             if (tileId == tileNeeded + 1) // To check if the correct tile has been pressed, we check the tile id
             {
@@ -113,7 +116,7 @@ public class PianoTiles extends Game {
                 super.getOnGameEventListener().onGameScoreEvent(-1,1);
                 Log.d("@@@", "inCorrect");
                // Sounds.playSound(9);
-            }
+            }}
         } else // No attempt block
         {
             Log.d("@@@", "no attempt");
@@ -125,7 +128,7 @@ public class PianoTiles extends Game {
     @Override
     public void onGameEnd() {
         super.onGameEnd();
-        connection.setAllTilesBlink(5, LED_COLOR_INDIGO);
+        connection.setAllTilesBlink(5, LED_COLOR_ORANGE);
     }
 
     public int getRandomNumber(int min, int max) {

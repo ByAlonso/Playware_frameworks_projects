@@ -1,12 +1,8 @@
 package com.example.playware_final_project;
 
-import static com.example.playware_final_project.Sounds.context;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,15 +11,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.livelife.motolibrary.AntData;
 import com.livelife.motolibrary.Game;
-import com.livelife.motolibrary.GameType;
 import com.livelife.motolibrary.MotoConnection;
 import com.livelife.motolibrary.OnAntEventListener;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class GameActivity extends AppCompatActivity implements OnAntEventListener, View.OnClickListener
 {
@@ -195,7 +187,9 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
                 points_scored = i;
                 if (points_scored == -1) {
                     playSound(9);
-                } else {
+                }
+
+                else {
                     playSound(sounds_order.get(i-1));
 
                     // advance in UI
@@ -515,7 +509,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
             case R.id.btn4b:
             case R.id.btn4c:
             case R.id.btn4d:
-                v.setBackgroundColor(getResources().getColor(R.color.purple));
+                v.setBackgroundColor(getResources().getColor(R.color.indigo_pink));
                 break;
 
 
