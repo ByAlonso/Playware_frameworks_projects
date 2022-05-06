@@ -1,41 +1,28 @@
 package com.example.playware_final_project;
 
-import static com.example.playware_final_project.Sounds.context;
+
 import static com.livelife.motolibrary.AntData.EVENT_PRESS;
-import static com.livelife.motolibrary.AntData.LED_COLOR_INDIGO;
 import static com.livelife.motolibrary.AntData.LED_COLOR_OFF;
 import static com.livelife.motolibrary.AntData.LED_COLOR_ORANGE;
-
-import android.media.MediaPlayer;
-import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.livelife.motolibrary.AntData;
 import com.livelife.motolibrary.Game;
 import com.livelife.motolibrary.GameType;
 import com.livelife.motolibrary.MotoConnection;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class PianoTiles extends Game {
     MotoConnection connection = MotoConnection.getInstance();
 
-    ArrayList<Integer> color_order = new ArrayList(42);
     //Twinkle twinkle has 42 notes
-//    public static MediaPlayer mediaPlayer;
+    ArrayList<Integer> color_order = new ArrayList(42);
 
     int currentTile = 0;
-    int currentSound = 0;
 
     ArrayList<Integer> sounds_order = new ArrayList(42);
-
 
 
     PianoTiles() {
@@ -49,26 +36,23 @@ public class PianoTiles extends Game {
     @Override
     public void onGameStart() {
 
-
-
-
         super.onGameStart();
         Log.d("@@@", "Starting game");
 
-
+        // Load the song
         Twinkle();
+
+        // Set up the tiles
         connection.setAllTilesIdle(LED_COLOR_OFF);
 
-
+        // Define the color of the tiles to match the UI
         connection.setTileColor(1, connection.connectedTiles.get(0));
         connection.setTileColor(2, connection.connectedTiles.get(1));
         connection.setTileColor(3, connection.connectedTiles.get(2));
         connection.setTileColor(4, connection.connectedTiles.get(3));
 
-        Log.d("@@@", "Preparing song");
 
-
-        //Fill fixed color orders
+        // Map the song notes to colors
         for (int i = 0; i < 42; i++) {
             if (sounds_order.get(i) == 0 || sounds_order.get(i) == 6 )
                 color_order.add(0);
@@ -79,10 +63,6 @@ public class PianoTiles extends Game {
             if (sounds_order.get(i) == 5 || sounds_order.get(i) == 7 || sounds_order.get(i) == 8)
                 color_order.add(3);
         }
-
-
-
-       // Sounds.playSound(0);
     }
 
 
@@ -95,32 +75,30 @@ public class PianoTiles extends Game {
 
         int tileId = AntData.getId(message);
         int event = AntData.getCommand(message);
-        //int colour = AntData.getColorFromPress(message);
 
 
         if (event == EVENT_PRESS) {
-            // Correct tile block
+            // End of game
             if(currentTile > 41)
                 onGameEnd();
-            else {
+
+
+            else { // Correct tile
             int tileNeeded = color_order.get(currentTile);
             if (tileId == tileNeeded + 1) // To check if the correct tile has been pressed, we check the tile id
             {
                 Log.d("@@@", "Correct");
-                //Sounds.playSound(sounds_order.get(currentSound));
                 currentTile++;
-//                currentSound++;
                 incrementPlayerScore(1, 1);
-            } else // Incorrect tile block
+            } else // Incorrect tile
             {
+                // This actually doesn't affect the score, it is used only to be able to play the error sound
                 super.getOnGameEventListener().onGameScoreEvent(-1,1);
-                Log.d("@@@", "inCorrect");
-               // Sounds.playSound(9);
+                Log.d("@@@", "Incorrect");
             }}
         } else // No attempt block
         {
             Log.d("@@@", "no attempt");
-//            incrementPlayerScore(0, 1); // No change to the score
 
         }
     }
@@ -131,13 +109,9 @@ public class PianoTiles extends Game {
         connection.setAllTilesBlink(5, LED_COLOR_ORANGE);
     }
 
-    public int getRandomNumber(int min, int max) {
-        return (int) ((Math.random() * (max - min)) + min);
-    }
 
     private void Twinkle(){
         //Adding the order of the sounds to the array
-        //sounds_order.add(0);
         sounds_order.add(1);
         sounds_order.add(1);
         sounds_order.add(7);
