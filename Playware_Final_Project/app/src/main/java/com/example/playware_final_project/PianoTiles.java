@@ -57,6 +57,8 @@ public class PianoTiles extends Game {
 
         Twinkle();
         connection.setAllTilesIdle(LED_COLOR_OFF);
+
+
         connection.setTileColor(1, connection.connectedTiles.get(0));
         connection.setTileColor(2, connection.connectedTiles.get(1));
         connection.setTileColor(3, connection.connectedTiles.get(2));
@@ -99,7 +101,7 @@ public class PianoTiles extends Game {
         if (event == EVENT_PRESS) {
             // Correct tile block
             int tileNeeded = color_order.get(currentTile);
-            if (tileId == tileNeeded) // To check if the correct tile has been pressed, we check the tile id
+            if (tileId == tileNeeded + 1) // To check if the correct tile has been pressed, we check the tile id
             {
                 Log.d("@@@", "Correct");
                 //Sounds.playSound(sounds_order.get(currentSound));
@@ -131,7 +133,7 @@ public class PianoTiles extends Game {
 
     private void Twinkle(){
         //Adding the order of the sounds to the array
-
+        //sounds_order.add(0);
         sounds_order.add(1);
         sounds_order.add(1);
         sounds_order.add(7);

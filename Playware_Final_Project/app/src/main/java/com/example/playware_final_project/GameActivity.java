@@ -5,6 +5,7 @@ import static com.example.playware_final_project.Sounds.context;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -60,6 +61,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
     Button btn1a, btn1b, btn1c, btn1d, btn2a, btn2b, btn2c, btn2d, btn3a, btn3b, btn3c, btn3d, btn4a, btn4b, btn4c, btn4d;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -74,9 +76,21 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
         // Generate the songs
         Twinkle();
 
+        for (int i = 0; i < 42; i++) {
+            if (sounds_order.get(i) == 0 || sounds_order.get(i) == 4 || sounds_order.get(i) == 8  )
+                color_order.add(0);
+            else if (sounds_order.get(i) == 1 || sounds_order.get(i) == 5)
+                color_order.add(1);
+            if (sounds_order.get(i) == 2 || sounds_order.get(i) == 6)
+                color_order.add(2);
+            if (sounds_order.get(i) == 3 || sounds_order.get(i) == 7)
+                color_order.add(3);
+
+        }
 
         // UI
         initBtn();
+
 
 
         game_object.selectedGameType = game_object.getGameTypes().get(0);
@@ -117,67 +131,61 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
          error_m = MediaPlayer.create(this, R.raw.error);
 
 
-        for (int i = 0; i < 42; i++) {
-            if (sounds_order.get(i) == 0 || sounds_order.get(i) == 4 || sounds_order.get(i) == 8  )
-                color_order.add(0);
-            else if (sounds_order.get(i) == 1 || sounds_order.get(i) == 5)
-                color_order.add(1);
-            if (sounds_order.get(i) == 2 || sounds_order.get(i) == 6)
-                color_order.add(2);
-            if (sounds_order.get(i) == 3 || sounds_order.get(i) == 7)
-                color_order.add(3);
 
-        }
+
 
 
         // Intialize the beggining of the song
 
+        getNextLine(0);
 
 
-        for(int i=0; i < 4; i++) {
-            int color = color_order.get(i);
-            if (color == 1) {
-                if (i ==0)
-                    setColor(btn1a);
-                else if (i == 1)
-                setColor(btn1b);
-                else if (i == 2)
-                setColor(btn1c);
-                else
-                setColor(btn1d);
-            }
 
-           else  if (color == 2) {
-                if (i == 0)
-                    setColor(btn2a);
-               else if (i == 1)
-                    setColor(btn2b);
-                else if (i == 2)
-                    setColor(btn2c);
-                else
-                    setColor(btn2d);
-            }
-            else if(color == 3) {
-                if (i == 0)
-                    setColor(btn3a);
-               else if (i == 1)
-                    setColor(btn3b);
-               else if (i == 2)
-                    setColor(btn3c);
-               else
-                    setColor(btn3d);
-            }
-           else if(color == 4) {
-                if (i == 0)
-                    setColor(btn4a);
-                else if (i == 1)
-                    setColor(btn4b);
-                else if (i == 2)
-                    setColor(btn4c);
-                else
-                    setColor(btn4d);
-            }
-        }
+
+//        for(int i=0; i < 4; i++) {
+//            int color = color_order.get(i);
+//            if (color == 1) {
+//                if (i ==0)
+//                    setColor(btn1a);
+//                else if (i == 1)
+//                setColor(btn1b);
+//                else if (i == 2)
+//                setColor(btn1c);
+//                else
+//                setColor(btn1d);
+//            }
+//
+//           else  if (color == 2) {
+//                if (i == 0)
+//                    setColor(btn2a);
+//               else if (i == 1)
+//                    setColor(btn2b);
+//                else if (i == 2)
+//                    setColor(btn2c);
+//                else
+//                    setColor(btn2d);
+//            }
+//            else if(color == 3) {
+//                if (i == 0)
+//                    setColor(btn3a);
+//               else if (i == 1)
+//                    setColor(btn3b);
+//               else if (i == 2)
+//                    setColor(btn3c);
+//               else
+//                    setColor(btn3d);
+//            }
+//           else if(color == 4) {
+//                if (i == 0)
+//                    setColor(btn4a);
+//                else if (i == 1)
+//                    setColor(btn4b);
+//                else if (i == 2)
+//                    setColor(btn4c);
+//                else
+//                    setColor(btn4d);
+//            }
+//        }
 
         game_object.setOnGameEventListener(new Game.OnGameEventListener()
         {
@@ -196,8 +204,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
 
                 // advance in UI
 
-
-                getNext(i);
+                getNextLine(i);
                 GameActivity.this.runOnUiThread(new Runnable()
                 {
                     @Override
@@ -253,7 +260,6 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
     {
 
     }
-
 
 
 
@@ -330,6 +336,8 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
         btn4c.setOnClickListener(this);
         btn4d = (Button) findViewById(R.id.btn4d);
         btn4d.setOnClickListener(this);
+
+
     }
 
     @Override
@@ -340,9 +348,78 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
     }
 
 
+    private void getNextLine(int i){
+        ArrayList<Integer> nextColors = new ArrayList<>(4);
+        nextColors.add(color_order.get(i));
+        nextColors.add(color_order.get(i+1));
+        nextColors.add(color_order.get(i+2));
+        nextColors.add(color_order.get(i+3));
 
 
+        btn1a.setBackgroundColor(getResources().getColor(R.color.white));
+        btn1b.setBackgroundColor(getResources().getColor(R.color.white));
+        btn1c.setBackgroundColor(getResources().getColor(R.color.white));
+        btn1d.setBackgroundColor(getResources().getColor(R.color.white));
+        btn2a.setBackgroundColor(getResources().getColor(R.color.white));
+        btn2b.setBackgroundColor(getResources().getColor(R.color.white));
+        btn2c.setBackgroundColor(getResources().getColor(R.color.white));
+        btn2d.setBackgroundColor(getResources().getColor(R.color.white));
+        btn3a.setBackgroundColor(getResources().getColor(R.color.white));
+        btn3b.setBackgroundColor(getResources().getColor(R.color.white));
+        btn3c.setBackgroundColor(getResources().getColor(R.color.white));
+        btn3d.setBackgroundColor(getResources().getColor(R.color.white));
+        btn4a.setBackgroundColor(getResources().getColor(R.color.white));
+        btn4b.setBackgroundColor(getResources().getColor(R.color.white));
+        btn4c.setBackgroundColor(getResources().getColor(R.color.white));
+        btn4d.setBackgroundColor(getResources().getColor(R.color.white));
 
+
+        for(int j=0; j< nextColors.size(); j++){
+            if(j==0){
+                if(nextColors.get(j) == 0)
+                    setColor(btn1a);
+                else if (nextColors.get(j) == 1)
+                    setColor(btn2a);
+                else if (nextColors.get(j) == 2)
+                    setColor(btn3a);
+                else
+                    setColor(btn4a);
+
+            }
+            else  if(j==1) {
+                if(nextColors.get(j) == 0)
+                    setColor(btn1b);
+                else if (nextColors.get(j) == 1)
+                    setColor(btn2b);
+                else if (nextColors.get(j) == 2)
+                    setColor(btn3b);
+                else
+                    setColor(btn4b);
+            }
+            else  if(j==2) {
+                if(nextColors.get(j) == 0)
+                    setColor(btn1c);
+                else if (nextColors.get(j) == 1)
+                    setColor(btn2c);
+                else if (nextColors.get(j) == 2)
+                    setColor(btn3c);
+                else
+                    setColor(btn4c);
+            }
+            else {
+                if(nextColors.get(j) == 0)
+                    setColor(btn1d);
+                else if (nextColors.get(j) == 1)
+                    setColor(btn2d);
+                else if (nextColors.get(j) == 2)
+                    setColor(btn3d);
+                else
+                    setColor(btn4d);
+            }
+
+        }
+
+    }
 
 
     private void getNext(int i){
@@ -362,9 +439,12 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
         }
 
 
-        btn1a.setBackground(btn1b.getBackground());
-        btn1b.setBackground(btn1c.getBackground());
-        btn1c.setBackground(btn1d.getBackground());
+        btn1a.setBackgroundColor(((ColorDrawable) btn1b.getBackground()).getColor());
+        btn1b.setBackgroundColor(((ColorDrawable) btn1c.getBackground()).getColor());
+        btn1c.setBackgroundColor(((ColorDrawable) btn1d.getBackground()).getColor());
+
+//        btn1b.setBackground(btn1c.getBackground());
+//        btn1c.setBackground(btn1d.getBackground());
         // Missing getting new color from list
         //btn1d.setBackground(btn1a.getBackground());
 
@@ -448,7 +528,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
 
     private void Twinkle(){
         //Adding the order of the sounds to the array
-
+       // sounds_order.add(0);
         sounds_order.add(1);
         sounds_order.add(1);
         sounds_order.add(7);
