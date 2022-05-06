@@ -196,23 +196,24 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
             }
 
             @Override
-            public void onGameScoreEvent(final int i, int i1)
-            {
+            public void onGameScoreEvent(final int i, int i1) {
                 // Updating the score
                 points_scored = i;
-                playSound(sounds_order.get(i));
+                if (points_scored == -1) {
+                    playSound(9);
+                } else {
+                    playSound(sounds_order.get(i));
 
-                // advance in UI
+                    // advance in UI
 
-                getNextLine(i);
-                GameActivity.this.runOnUiThread(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        player_score.setText(String.valueOf(points_scored));
-                    }
-                });
+                    getNextLine(i);
+                    GameActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            player_score.setText(String.valueOf(points_scored));
+                        }
+                    });
+                }
             }
 
             @Override

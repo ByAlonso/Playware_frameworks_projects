@@ -110,13 +110,14 @@ public class PianoTiles extends Game {
                 incrementPlayerScore(1, 1);
             } else // Incorrect tile block
             {
+
                 Log.d("@@@", "inCorrect");
                // Sounds.playSound(9);
             }
         } else // No attempt block
         {
             Log.d("@@@", "no attempt");
-            incrementPlayerScore(0, 1); // No change to the score
+//            incrementPlayerScore(0, 1); // No change to the score
 
         }
     }
