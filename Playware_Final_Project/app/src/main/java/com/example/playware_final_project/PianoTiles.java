@@ -22,6 +22,8 @@ public class PianoTiles extends Game {
 
     int currentTile = 0;
 
+    public int errors = 0;
+
     ArrayList<Integer> sounds_order = new ArrayList(42);
 
 
@@ -92,6 +94,7 @@ public class PianoTiles extends Game {
                 incrementPlayerScore(1, 1);
             } else // Incorrect tile
             {
+                errors++;
                 // This actually doesn't affect the score, it is used only to be able to play the error sound
                 super.getOnGameEventListener().onGameScoreEvent(-1,1);
                 Log.d("@@@", "Incorrect");

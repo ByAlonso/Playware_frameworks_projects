@@ -1,12 +1,21 @@
 package com.example.playware_final_project;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.livelife.motolibrary.Game;
 import com.livelife.motolibrary.MotoConnection;
@@ -21,6 +30,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
     PianoTiles game_object = new PianoTiles();
     LinearLayout gt_container;
     int points_scored =0;
+
     ArrayList<Integer> sounds_order = new ArrayList(42);
     ArrayList<Integer> color_order = new ArrayList(42);
 
@@ -36,8 +46,48 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
     MediaPlayer error_m ;
 
 
+
+
+
+
     Button btn1a, btn1b, btn1c, btn1d, btn2a, btn2b, btn2c, btn2d, btn3a, btn3b, btn3c, btn3d, btn4a, btn4b, btn4c, btn4d;
 
+
+
+    public void onButtonShowPopupWindowClick(View view, int score) {
+
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater)
+                getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_window, null);
+
+        // create the popup window
+        int width = 800;
+        int height = 600;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        TextView popupText = popupView.findViewById(R.id.popup_text);
+        popupText.setText("GAME OVER! Your score is: \n\n" +  String.valueOf(score));
+
+
+
+        // show the popup window
+        // which view you pass in doesn't matter, it is only used for the window tolken
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        // dismiss the popup window when touched
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Intent intent = new Intent(GameActivity.this,
+                        MainActivity.class);
+                startActivity(intent);
+                popupWindow.dismiss();
+                return true;
+            }
+        });
+    }
 
 
     @Override
@@ -68,11 +118,13 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
         // Initialize UI
         initBtn();
 
+
         game_object.selectedGameType = game_object.getGameTypes().get(0);
 
         game_object.startGame();
 
         final TextView player_score = findViewById(R.id.score_value); // Where the player's score is displayed
+        final TextView player_error = findViewById(R.id.error_value); // Where the player's error is displayed
 
 
         // Initialize media for each sound
@@ -103,8 +155,27 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
             public void onGameScoreEvent(final int i, int i1) {
                 // Updating the score
                 points_scored = i;
-                if (points_scored == -1) {
+
+                if(points_scored > 41){
+
+                    int final_score = points_scored - (game_object.errors * 2);
+                    getNextLine(i);
+
+
+                    onButtonShowPopupWindowClick(btn1a, final_score);
+
+
+                }
+
+                else if (points_scored == -1) {
                     playSound(9);
+                    GameActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            player_error.setText("Errors: " + String.valueOf(game_object.errors));
+                        }
+                    });
+
                 }
 
                 else {
@@ -115,7 +186,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
                     GameActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            player_score.setText(String.valueOf(points_scored));
+                            player_score.setText("Tiles: " + String.valueOf(points_scored));
                         }
                     });
                 }
@@ -124,6 +195,8 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
             @Override
             public void onGameStopEvent()
             {
+
+
 
             }
 
@@ -147,7 +220,9 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
         });
 
 
+
     }
+
 
     @Override
     public void onMessageReceived(byte[] bytes, long l)
