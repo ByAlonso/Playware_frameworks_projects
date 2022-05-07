@@ -86,20 +86,20 @@ public class PianoTiles extends Game {
 
 
             else { // Correct tile
-            int tileNeeded = color_order.get(currentTile);
-            if (tileId == tileNeeded + 1) // To check if the correct tile has been pressed, we check the tile id
-            {
-                Log.d("@@@", "Correct");
-                currentTile++;
-                incrementPlayerScore(1, 1);
-            } else // Incorrect tile
-            {
-                errors++;
-                // This actually doesn't affect the score, it is used only to be able to play the error sound
-                super.getOnGameEventListener().onGameScoreEvent(-1,1);
-                Log.d("@@@", "Incorrect");
-            }}
-        } else // No attempt block
+                int tileNeeded = color_order.get(currentTile);
+                if (tileId == tileNeeded + 1) // To check if the correct tile has been pressed, we check the tile id
+                {
+                    Log.d("@@@", "Correct");
+                    currentTile++;
+                    incrementPlayerScore(1, 1);
+                } else // Incorrect tile
+                {
+                    errors++;
+                    // This actually doesn't affect the score, it is used only to be able to play the error sound
+                    super.getOnGameEventListener().onGameScoreEvent(-1,1);
+                    Log.d("@@@", "Incorrect");
+                }}
+            } else // No attempt block
         {
             Log.d("@@@", "no attempt");
 

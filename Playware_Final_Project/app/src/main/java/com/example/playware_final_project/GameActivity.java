@@ -29,7 +29,8 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
 
     PianoTiles game_object = new PianoTiles();
     LinearLayout gt_container;
-    int points_scored =0;
+    int points_scored = 0;
+    //public static boolean ranked = false;
 
     ArrayList<Integer> sounds_order = new ArrayList(42);
     ArrayList<Integer> color_order = new ArrayList(42);
@@ -64,7 +65,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
         // create the popup window
         int width = 800;
         int height = 600;
-        boolean focusable = true; // lets taps outside the popup also dismiss it
+        boolean focusable = false; // lets taps outside the popup also dismiss it
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
         TextView popupText = popupView.findViewById(R.id.popup_text);
@@ -100,6 +101,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
         connection.setAllTilesToInit();
 
         gt_container = findViewById(R.id.game_type_container);
+        points_scored = 0;
 
         // Generate the song
         Twinkle();
@@ -165,6 +167,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
 
 
                     onButtonShowPopupWindowClick(btn1a, final_score);
+                    game_object.onGameEnd();
 
 
                 }
