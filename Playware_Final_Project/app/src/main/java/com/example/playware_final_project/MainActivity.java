@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
         statusTextView = findViewById(R.id.statusTextView);
         pairingButton = findViewById(R.id.pairingButton);
         startGameButton = findViewById(R.id.startGameButton);
+        highscoreButton = findViewById(R.id.highscoreButton);
 
         startGameButton.setOnClickListener(new View.OnClickListener()
         {
@@ -42,6 +43,17 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
             {
                 connection.unregisterListener(MainActivity.this);
                 Intent i = new Intent(MainActivity.this, GameActivity.class);
+                startActivity(i);
+            }
+        });
+
+        highscoreButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                connection.unregisterListener(MainActivity.this);
+                Intent i = new Intent(MainActivity.this, Ranking.class);
                 startActivity(i);
             }
         });
@@ -62,17 +74,6 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
                     pairingButton.setText("Start Pairing");
                 }
                 is_pairing = !is_pairing;
-            }
-        });
-
-        highscoreButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                connection.unregisterListener(MainActivity.this);
-                Intent i = new Intent(MainActivity.this, Ranking.class);
-                startActivity(i);
             }
         });
     }
