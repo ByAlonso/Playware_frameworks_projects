@@ -158,6 +158,8 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
 
                 if(points_scored > 41){
 
+                    playSound(sounds_order.get(i-1));
+
                     int final_score = points_scored - (game_object.errors * 2);
                     getNextLine(i);
 

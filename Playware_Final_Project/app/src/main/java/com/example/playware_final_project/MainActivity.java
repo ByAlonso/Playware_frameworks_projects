@@ -15,7 +15,7 @@ import com.livelife.motolibrary.OnAntEventListener;
 public class MainActivity extends AppCompatActivity implements OnAntEventListener
 {
     MotoConnection connection;
-    Button pairingButton, startGameButton;
+    Button pairingButton, startGameButton, highscoreButton;
     TextView statusTextView; // To display the number of tiles connected
     boolean is_pairing = false;
 
@@ -54,17 +54,30 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
                 if(!is_pairing)
                 {
                     connection.pairTilesStart();
-                    pairingButton.setText("Stop Paring");
+                    pairingButton.setText("Stop Pairing");
                 }
                 else
                 {
                     connection.pairTilesStop();
-                    pairingButton.setText("Start Paring");
+                    pairingButton.setText("Start Pairing");
                 }
                 is_pairing = !is_pairing;
             }
         });
+
+        highscoreButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                connection.unregisterListener(MainActivity.this);
+                Intent i = new Intent(MainActivity.this, Ranking.class);
+                startActivity(i);
+            }
+        });
     }
+
+
 
     @Override
     public void onMessageReceived(byte[] bytes, long l)
