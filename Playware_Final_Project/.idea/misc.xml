@@ -3,8 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Alonso/Documents/Playware_frameworks_projects/Playware_Final_Project/app/src/main/res/layout/activity_main.xml" value="0.1234375" />
+        <entry key="..\:/Users/Alonso/Documents/Playware_frameworks_projects/Playware_Final_Project/app/src/main/res/drawable/custom_blue_button.xml" value="0.1" />
+        <entry key="..\:/Users/Alonso/Documents/Playware_frameworks_projects/Playware_Final_Project/app/src/main/res/drawable/custom_button.xml" value="0.1" />
+        <entry key="..\:/Users/Alonso/Documents/Playware_frameworks_projects/Playware_Final_Project/app/src/main/res/drawable/custom_green_button.xml" value="0.1" />
+        <entry key="..\:/Users/Alonso/Documents/Playware_frameworks_projects/Playware_Final_Project/app/src/main/res/drawable/custom_pink_button.xml" value="0.1" />
+        <entry key="..\:/Users/Alonso/Documents/Playware_frameworks_projects/Playware_Final_Project/app/src/main/res/drawable/custom_playing_button.xml" value="0.1" />
+        <entry key="..\:/Users/Alonso/Documents/Playware_frameworks_projects/Playware_Final_Project/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="..\:/Users/Alonso/Documents/Playware_frameworks_projects/Playware_Final_Project/app/src/main/res/layout/activity_game.xml" value="0.264" />
+        <entry key="..\:/Users/Alonso/Documents/Playware_frameworks_projects/Playware_Final_Project/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/Alonso/Documents/Playware_frameworks_projects/Playware_Final_Project/app/src/main/res/layout/activity_ranking.xml" value="0.10989583333333333" />
+        <entry key="..\:/Users/Alonso/Documents/Playware_frameworks_projects/Playware_Final_Project/app/src/main/res/layout/popup_window.xml" value="0.10989583333333333" />
         <entry key="..\:/Users/Alonso/Documents/Playware_frameworks_projects/Playware_Final_Project/app/src/main/res/layout/ranking_layout.xml" value="0.25" />
         <entry key="..\:/Users/timmy/AndroidStudioProjects/Playware_Final_Project/app/src/main/res/layout/activity_game.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/timmy/AndroidStudioProjects/Playware_Final_Project/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
