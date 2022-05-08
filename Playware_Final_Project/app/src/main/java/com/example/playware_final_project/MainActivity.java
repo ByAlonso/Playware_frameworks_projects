@@ -5,12 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.livelife.motolibrary.MotoConnection;
 import com.livelife.motolibrary.OnAntEventListener;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity implements OnAntEventListener
 {
@@ -24,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Log.i("EEEEEEEEEE","EEE");
         connection=MotoConnection.getInstance();
         connection.startMotoConnection(MainActivity.this);
         connection.saveRfFrequency(36);         // Check the back of your tiles for the RF
