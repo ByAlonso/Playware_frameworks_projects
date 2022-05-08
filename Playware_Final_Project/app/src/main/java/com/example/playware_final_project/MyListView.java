@@ -22,12 +22,10 @@ public class MyListView extends BaseAdapter {
     private final Integer[] index;
 
     public MyListView(Context context, String[] username,Integer[] score, Integer[] index) {
-        Log.wtf("EEEE",username[0]);
         this.context=context;
         this.username=username;
         this.score=score;
         this.index=index;
-
     }
 
 
@@ -50,7 +48,6 @@ public class MyListView extends BaseAdapter {
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater=LayoutInflater.from(context);
         View rowView=inflater.inflate(R.layout.ranking_layout, parent,false);
-        Log.i("POSSS",String.valueOf(position));
         TextView indexText = (TextView) rowView.findViewById(R.id.rank_number);
         if(position == 0){
             indexText.setBackgroundColor(Color.parseColor("#E5B80B"));

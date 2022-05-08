@@ -4,6 +4,8 @@ package com.example.playware_final_project;
 import static com.livelife.motolibrary.AntData.EVENT_PRESS;
 import static com.livelife.motolibrary.AntData.LED_COLOR_OFF;
 import static com.livelife.motolibrary.AntData.LED_COLOR_ORANGE;
+
+import android.os.Handler;
 import android.util.Log;
 
 
@@ -13,6 +15,8 @@ import com.livelife.motolibrary.GameType;
 import com.livelife.motolibrary.MotoConnection;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
 
 public class PianoTiles extends Game {
     MotoConnection connection = MotoConnection.getInstance();
@@ -25,45 +29,41 @@ public class PianoTiles extends Game {
     public int errors = 0;
 
     ArrayList<Integer> sounds_order = new ArrayList(42);
-
+    public HashMap<Integer,Integer> tilesDict = new HashMap<Integer,Integer>();
 
     PianoTiles() {
         setName("Piano Tiles");
-
         GameType gt = new GameType(1, GameType.GAME_TYPE_SCORE, 42, "twinkle twinkle little star", 1);
         addGameType(gt);
-
     }
 
     @Override
     public void onGameStart() {
 
         super.onGameStart();
-        Log.d("@@@", "Starting game");
-
         // Load the song
         Twinkle();
-
         // Set up the tiles
         connection.setAllTilesIdle(LED_COLOR_OFF);
-
         // Define the color of the tiles to match the UI
+        //Needs to be fixed
         connection.setTileColor(1, connection.connectedTiles.get(0));
         connection.setTileColor(2, connection.connectedTiles.get(1));
         connection.setTileColor(3, connection.connectedTiles.get(2));
         connection.setTileColor(4, connection.connectedTiles.get(3));
 
+        tilesDict.put(1,connection.connectedTiles.get(0));
+        tilesDict.put(2,connection.connectedTiles.get(1));
+        tilesDict.put(3,connection.connectedTiles.get(2));
+        tilesDict.put(4,connection.connectedTiles.get(3));
 
+        final int min = 0;
+        final int max = 3;
+        int random;
         // Map the song notes to colors
         for (int i = 0; i < 42; i++) {
-            if (sounds_order.get(i) == 0 || sounds_order.get(i) == 6 )
-                color_order.add(0);
-            else if (sounds_order.get(i) == 1 || sounds_order.get(i) == 2)
-                color_order.add(1);
-            if (sounds_order.get(i) == 3 || sounds_order.get(i) == 4)
-                color_order.add(2);
-            if (sounds_order.get(i) == 5 || sounds_order.get(i) == 7 || sounds_order.get(i) == 8)
-                color_order.add(3);
+            random = new Random().nextInt((max - min) + 1) + min;
+            color_order.add(random);
         }
     }
 
@@ -77,19 +77,16 @@ public class PianoTiles extends Game {
 
         int tileId = AntData.getId(message);
         int event = AntData.getCommand(message);
-
-
         if (event == EVENT_PRESS) {
+
             // End of game
             if(currentTile > 41)
                 onGameEnd();
 
-
             else { // Correct tile
-                int tileNeeded = color_order.get(currentTile);
-                if (tileId == tileNeeded + 1) // To check if the correct tile has been pressed, we check the tile id
+                int tileNeeded = color_order.get(currentTile) + 1;
+                if (tileId == tilesDict.get(tileNeeded)) // To check if the correct tile has been pressed, we check the tile id
                 {
-                    Log.d("@@@", "Correct");
                     currentTile++;
                     incrementPlayerScore(1, 1);
                 } else // Incorrect tile
@@ -97,13 +94,8 @@ public class PianoTiles extends Game {
                     errors++;
                     // This actually doesn't affect the score, it is used only to be able to play the error sound
                     super.getOnGameEventListener().onGameScoreEvent(-1,1);
-                    Log.d("@@@", "Incorrect");
-                }}
-            } else // No attempt block
-        {
-            Log.d("@@@", "no attempt");
-
-        }
+                } }
+            }
     }
 
     @Override

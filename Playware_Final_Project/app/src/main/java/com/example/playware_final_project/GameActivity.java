@@ -3,15 +3,19 @@ package com.example.playware_final_project;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -22,6 +26,11 @@ import com.livelife.motolibrary.MotoConnection;
 import com.livelife.motolibrary.OnAntEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class GameActivity extends AppCompatActivity implements OnAntEventListener
 {
@@ -31,9 +40,6 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
     LinearLayout gt_container;
     int points_scored = 0;
     //public static boolean ranked = false;
-
-    ArrayList<Integer> sounds_order = new ArrayList(42);
-    ArrayList<Integer> color_order = new ArrayList(42);
 
     MediaPlayer a5_m;
     MediaPlayer c4_m;
@@ -46,50 +52,67 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
     MediaPlayer g4_long_m ;
     MediaPlayer error_m ;
 
-
-
-
-
-
     Button btn1a, btn1b, btn1c, btn1d, btn2a, btn2b, btn2c, btn2d, btn3a, btn3b, btn3c, btn3d, btn4a, btn4b, btn4c, btn4d;
-
-
 
     public void onButtonShowPopupWindowClick(View view, int score) {
 
         // inflate the layout of the popup window
-        LayoutInflater inflater = (LayoutInflater)
-                getSystemService(LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = this.getLayoutInflater();
         View popupView = inflater.inflate(R.layout.popup_window, null);
 
         // create the popup window
         int width = 800;
         int height = 600;
         boolean focusable = false; // lets taps outside the popup also dismiss it
-        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-
+        final AlertDialog dialogBuilder = new AlertDialog.Builder(this).create();
+        dialogBuilder.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         TextView popupText = popupView.findViewById(R.id.popup_text);
-        popupText.setText("GAME OVER! Your score is: \n\n" +  String.valueOf(score));
+        final EditText editText = (EditText) popupView.findViewById(R.id.txtSub);
+        Button submit_button = (Button) popupView.findViewById(R.id.submit_username);
+        Button cancel_button = (Button) popupView.findViewById(R.id.cancel_username);
 
+        popupText.setText("Congratulations! Join our scoreboard! Your score is: " +  String.valueOf(score));
 
-
-        // show the popup window
-        // which view you pass in doesn't matter, it is only used for the window tolken
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-
-        // dismiss the popup window when touched
-        popupView.setOnTouchListener(new View.OnTouchListener() {
+        submit_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                Intent intent = new Intent(GameActivity.this,
-                        MainActivity.class);
-                startActivity(intent);
-                popupWindow.dismiss();
-                return true;
+            public void onClick(View view) {
+                String uname = editText.getText().toString();
+                if(TextUtils.isEmpty(uname)){
+                    Toast.makeText(getApplicationContext(), "Username cannot be empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sendPost(uname, "Twinkle Twinkle Little Star",score);
+                dialogBuilder.dismiss();
+            }
+        });
+        cancel_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // DO SOMETHINGS
+                dialogBuilder.dismiss();
+            }
+        });
+        dialogBuilder.setView(popupView);
+        dialogBuilder.show();
+
+    }
+    public void sendPost(String username, String song, Integer score) {
+        Api api = RetrofitClient.getInstance().getMyApi();
+        UserModel user = new UserModel(username,song,score);
+        Call<UserModel> call = api.createPost(user);
+        call.enqueue(new Callback<UserModel>() {
+            @Override
+            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                // this method is called when we get response from our api.
+                Toast.makeText(getApplicationContext(), "Username Added", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<UserModel> call, Throwable t) {
+
             }
         });
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -103,24 +126,8 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
         gt_container = findViewById(R.id.game_type_container);
         points_scored = 0;
 
-        // Generate the song
-        Twinkle();
-
-        for (int i = 0; i < 42; i++) {
-            if (sounds_order.get(i) == 0 || sounds_order.get(i) == 6 )
-                color_order.add(0);
-            else if (sounds_order.get(i) == 1 || sounds_order.get(i) == 2)
-                color_order.add(1);
-            if (sounds_order.get(i) == 3 || sounds_order.get(i) == 4)
-                color_order.add(2);
-            if (sounds_order.get(i) == 5 || sounds_order.get(i) == 7 || sounds_order.get(i) == 8)
-                color_order.add(3);
-        }
-
         // Initialize UI
         initBtn();
-
-
         game_object.selectedGameType = game_object.getGameTypes().get(0);
 
         game_object.startGame();
@@ -159,17 +166,11 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
                 points_scored = i;
 
                 if(points_scored > 41){
-
-                    playSound(sounds_order.get(i-1));
-
+                    playSound(game_object.sounds_order.get(i-1));
                     int final_score = points_scored - (game_object.errors * 2);
                     getNextLine(i);
-
-
                     onButtonShowPopupWindowClick(btn1a, final_score);
                     game_object.onGameEnd();
-
-
                 }
 
                 else if (points_scored == -1) {
@@ -184,7 +185,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
                 }
 
                 else {
-                    playSound(sounds_order.get(i-1));
+                    playSound(game_object.sounds_order.get(i-1));
 
                     // advance in UI
                     getNextLine(i);
@@ -296,43 +297,43 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
             // Everything goes blank
         }
         else if (i>=42 -1){
-            nextColors.add(color_order.get(i));
+            nextColors.add(game_object.color_order.get(i));
         }
         else if (i>=42 -2){
-            nextColors.add(color_order.get(i));
-            nextColors.add(color_order.get(i+1));
+            nextColors.add(game_object.color_order.get(i));
+            nextColors.add(game_object.color_order.get(i+1));
         }
         else if (i>=42 -3){
-            nextColors.add(color_order.get(i));
-            nextColors.add(color_order.get(i+1));
-            nextColors.add(color_order.get(i+2));
+            nextColors.add(game_object.color_order.get(i));
+            nextColors.add(game_object.color_order.get(i+1));
+            nextColors.add(game_object.color_order.get(i+2));
         }
 
-        // Rest of cases
+        // Rest of casesgame_object.
         else {
-            nextColors.add(color_order.get(i));
-            nextColors.add(color_order.get(i + 1));
-            nextColors.add(color_order.get(i + 2));
-            nextColors.add(color_order.get(i + 3));
+            nextColors.add(game_object.color_order.get(i));
+            nextColors.add(game_object.color_order.get(i + 1));
+            nextColors.add(game_object.color_order.get(i + 2));
+            nextColors.add(game_object.color_order.get(i + 3));
         }
 
         // By default, we always clear all the colors
-        btn1a.setBackgroundColor(getResources().getColor(R.color.white));
-        btn1b.setBackgroundColor(getResources().getColor(R.color.white));
-        btn1c.setBackgroundColor(getResources().getColor(R.color.white));
-        btn1d.setBackgroundColor(getResources().getColor(R.color.white));
-        btn2a.setBackgroundColor(getResources().getColor(R.color.white));
-        btn2b.setBackgroundColor(getResources().getColor(R.color.white));
-        btn2c.setBackgroundColor(getResources().getColor(R.color.white));
-        btn2d.setBackgroundColor(getResources().getColor(R.color.white));
-        btn3a.setBackgroundColor(getResources().getColor(R.color.white));
-        btn3b.setBackgroundColor(getResources().getColor(R.color.white));
-        btn3c.setBackgroundColor(getResources().getColor(R.color.white));
-        btn3d.setBackgroundColor(getResources().getColor(R.color.white));
-        btn4a.setBackgroundColor(getResources().getColor(R.color.white));
-        btn4b.setBackgroundColor(getResources().getColor(R.color.white));
-        btn4c.setBackgroundColor(getResources().getColor(R.color.white));
-        btn4d.setBackgroundColor(getResources().getColor(R.color.white));
+        btn1a.setAlpha((float) 0.4);
+        btn1b.setAlpha((float) 0.4);
+        btn1c.setAlpha((float) 0.4);
+        btn1d.setAlpha((float) 0.4);
+        btn2a.setAlpha((float) 0.4);
+        btn2b.setAlpha((float) 0.4);
+        btn2c.setAlpha((float) 0.4);
+        btn2d.setAlpha((float) 0.4);
+        btn3a.setAlpha((float) 0.4);
+        btn3b.setAlpha((float) 0.4);
+        btn3c.setAlpha((float) 0.4);
+        btn3d.setAlpha((float) 0.4);
+        btn4a.setAlpha((float) 0.4);
+        btn4b.setAlpha((float) 0.4);
+        btn4c.setAlpha((float) 0.4);
+        btn4d.setAlpha((float) 0.4);
 
 
         // For each of the next notes, we color the button corresponding with the note
@@ -348,7 +349,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
                     setColor(btn4a);
 
             }
-            else  if(j==1) {
+            else if(j==1) {
                 if(nextColors.get(j) == 0)
                     setColor(btn1b);
                 else if (nextColors.get(j) == 1)
@@ -358,7 +359,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
                 else
                     setColor(btn4b);
             }
-            else  if(j==2) {
+            else if(j==2) {
                 if(nextColors.get(j) == 0)
                     setColor(btn1c);
                 else if (nextColors.get(j) == 1)
@@ -382,35 +383,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
     }
 
     private void setColor(View v){
-        switch (v.getId()) {
-            case R.id.btn1a:
-            case R.id.btn1b:
-            case R.id.btn1c:
-            case R.id.btn1d:
-                v.setBackgroundColor(getResources().getColor(R.color.red));
-                break;
-
-            case R.id.btn2a:
-            case R.id.btn2b:
-            case R.id.btn2c:
-            case R.id.btn2d:
-                v.setBackgroundColor(getResources().getColor(R.color.blue));
-                break;
-
-            case R.id.btn3a:
-            case R.id.btn3b:
-            case R.id.btn3c:
-            case R.id.btn3d:
-                v.setBackgroundColor(getResources().getColor(R.color.green));
-                break;
-
-            case R.id.btn4a:
-            case R.id.btn4b:
-            case R.id.btn4c:
-            case R.id.btn4d:
-                v.setBackgroundColor(getResources().getColor(R.color.indigo_pink));
-                break;
-        }
+        v.setAlpha((float) 1);
     }
 
     // To initialize UI
@@ -431,58 +404,5 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
         btn4b = (Button) findViewById(R.id.btn4b);
         btn4c = (Button) findViewById(R.id.btn4c);
         btn4d = (Button) findViewById(R.id.btn4d);
-    }
-
-
-    private void Twinkle(){
-        //Adding the order of the sounds to the array
-        sounds_order.add(1);
-        sounds_order.add(1);
-        sounds_order.add(7);
-        sounds_order.add(7);
-        sounds_order.add(0);
-        sounds_order.add(0);
-        sounds_order.add(8);
-
-        sounds_order.add(6);
-        sounds_order.add(6);
-        sounds_order.add(5);
-        sounds_order.add(5);
-        sounds_order.add(3);
-        sounds_order.add(3);
-        sounds_order.add(2);
-
-        sounds_order.add(7);
-        sounds_order.add(7);
-        sounds_order.add(6);
-        sounds_order.add(6);
-        sounds_order.add(5);
-        sounds_order.add(5);
-        sounds_order.add(4);
-
-        sounds_order.add(7);
-        sounds_order.add(7);
-        sounds_order.add(6);
-        sounds_order.add(6);
-        sounds_order.add(5);
-        sounds_order.add(5);
-        sounds_order.add(4);
-
-        sounds_order.add(1);
-        sounds_order.add(1);
-        sounds_order.add(7);
-        sounds_order.add(7);
-        sounds_order.add(0);
-        sounds_order.add(0);
-        sounds_order.add(8);
-
-        sounds_order.add(6);
-        sounds_order.add(6);
-        sounds_order.add(5);
-        sounds_order.add(5);
-        sounds_order.add(3);
-        sounds_order.add(3);
-        sounds_order.add(2);
-
     }
 }

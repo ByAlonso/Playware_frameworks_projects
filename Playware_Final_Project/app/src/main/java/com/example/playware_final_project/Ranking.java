@@ -32,7 +32,6 @@ public class Ranking extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ranking);
         superListView = findViewById(R.id.superListView);
-        Log.i("EEEEE","USER");
         getUserList();
     }
 
@@ -54,7 +53,6 @@ public class Ranking extends AppCompatActivity {
 
                 MyListView adapter = new MyListView(getApplicationContext(), userName, score, index);
                 superListView.setAdapter(adapter);
-                //superListView.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,userName));
             }
 
             @Override
